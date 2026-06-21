@@ -1,7 +1,7 @@
 # Public keys for condado.dev
 
 OpenPGP public keys for **condado.dev**, published via [Web Key Directory
-(WKD)][wkd] so they can be discovered automatically from an email address — no
+(WKD)][wkd] so they can be discovered automatically from an email address - no
 keyserver, no manual fingerprint exchange.
 
 ## Fetch a key automatically (WKD)

@@ -1,5 +1,5 @@
 # GitHub Pages (Jekyll) renders README.md into the site landing page, but by
-# default Jekyll EXCLUDES dot-directories — which would drop `.well-known/` and
+# default Jekyll EXCLUDES dot-directories - which would drop `.well-known/` and
 # silently break WKD. Force it back in so the WKD files are published.
 include:
   - ".well-known"
