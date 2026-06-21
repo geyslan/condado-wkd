@@ -97,15 +97,31 @@ just won't be found by `gpg --locate-keys`.
    This only adds the `openpgpkey` subdomain - existing MX / email-forwarding
    records on the apex are untouched.
 
-> **Note - browser mail clients:** GitHub Pages cannot set CORS headers. `gpg`
-> does not need them, but browser-based clients (e.g. Proton webmail) require
-> `Access-Control-Allow-Origin: *` to discover WKD keys. If you need that, host
-> on Cloudflare Pages and add a `_headers` file:
+> **Note - browser mail clients:** browser-based clients (e.g. Proton webmail)
+> need `Access-Control-Allow-Origin: *` to discover WKD keys; `gpg` does not.
+> GitHub Pages already sends this header (via its Fastly CDN), so no extra config
+> is required - verify with:
 >
+> ```bash
+> curl -sI https://openpgpkey.condado.dev/.well-known/openpgpkey/condado.dev/hu/6ctg9rxzxkd71npa1efp3rx3wcy4qcmm \
+>   | grep -i access-control-allow-origin   # -> access-control-allow-origin: *
 > ```
-> /.well-known/openpgpkey/*
->   Access-Control-Allow-Origin: *
-> ```
+
+## Methods: advanced only (by design)
+
+WKD has two layouts (see [the validator](https://www.webkeydirectory.com/)):
+
+- **Advanced** (what we use): served from the dedicated `openpgpkey.condado.dev`
+  subdomain at `.../openpgpkey/condado.dev/hu/<hash>`.
+- **Direct**: served from the apex at `https://condado.dev/.well-known/openpgpkey/hu/<hash>`.
+
+Only **advanced** is configured, and that is sufficient: every WKD client tries
+advanced first and falls back to direct only if advanced is absent. Direct is
+also impractical here - the apex has no web host (just DNS + email forwarding),
+and a GitHub Pages repo allows a single custom domain (already `openpgpkey.`),
+so serving the apex would need a separate host. If a real website ever lives on
+`condado.dev`, adding the apex `.well-known/openpgpkey/` tree would then give
+direct for free - but there is no WKD reason to do it.
 
 ## Verify
 
