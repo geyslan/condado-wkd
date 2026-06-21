@@ -23,13 +23,18 @@ address and hosted under the domain we control.
         ├── policy                              # required, intentionally empty
         └── hu/
             └── 6ctg9rxzxkd71npa1efp3rx3wcy4qcmm   # binary pubkey for gg@condado.dev
+keys/
+└── gg.asc                                      # armored copy, for human-facing links
 CNAME                                            # GitHub Pages custom domain
 ```
 
 - Each file under `hu/` is the **binary** (`--no-armor`) OpenPGP public key for
   one email address. The filename is the [z-base-32][zb32] SHA-1 hash of the
-  lowercased local part (the bit before `@`).
+  lowercased local part (the bit before `@`). These are what WKD clients fetch.
 - `policy` must exist but is empty (it can carry WKD policy flags; we use none).
+- `keys/*.asc` are **ASCII-armored** copies for humans — link them on a webpage,
+  paste in a profile, etc. They are *not* part of WKD discovery; they are just
+  static downloads (`curl …/keys/gg.asc | gpg --import`).
 
 ## Published keys
 
@@ -59,6 +64,21 @@ CNAME                                            # GitHub Pages custom domain
 One file per email address. Different people use different local parts (and so
 different `hu/` files); multiple keys bound to the *same* address share one file
 (export them all into it).
+
+To also publish an armored copy for linking, export the same key with `--armor`:
+
+```bash
+gpg --armor --export-options export-minimal --export <email> > keys/<name>.asc
+```
+
+### Keys for domains you do not control
+
+WKD is **domain-scoped**: a lookup for `user@example.com` is computed from and
+fetched from `example.com`'s own WKD — never from condado.dev. So a key for an
+address like `geyslan.gregorio@aquasec.com` **cannot** be made WKD-discoverable
+from here; only the owner of `aquasec.com` can publish that. You may still host
+it as an armored link-only download under `keys/` (a public key is public) — it
+just won't be found by `gpg --locate-keys`.
 
 ## Hosting (GitHub Pages)
 
@@ -93,8 +113,11 @@ gpg --locate-external-keys gg@condado.dev
 # raw fetch of the hu file:
 curl -s https://openpgpkey.condado.dev/.well-known/openpgpkey/condado.dev/hu/6ctg9rxzxkd71npa1efp3rx3wcy4qcmm | gpg --import
 
+# armored copy (human-facing link):
+curl -s https://openpgpkey.condado.dev/keys/gg.asc | gpg --import
+
 # online checker:
-#   https://metacode.biz/openpgp/web-key-directory  (enter gg@condado.dev)
+#   https://www.webkeydirectory.com/  (enter gg@condado.dev)
 ```
 
 [wkd]: https://datatracker.ietf.org/doc/draft-koch-openpgp-webkey-service/
