@@ -16,7 +16,9 @@ _config.yml                                      # Jekyll: force-include .well-k
         └── hu/
             └── 6ctg9rxzxkd71npa1efp3rx3wcy4qcmm   # binary pubkey for gg@condado.dev
 keys/
-└── gg.asc                                      # armored copy, for human-facing links
+├── gg.asc                                      # armored copy, for human-facing links
+└── aquasec.com/                                # link-only keys, grouped by owning domain
+    └── geyslan.gregorio.asc                    # <localpart>.asc (not WKD-discoverable)
 CNAME                                            # GitHub Pages custom domain
 README.md                                        # rendered landing page (/)
 MAINTENANCE.md                                   # this file
@@ -79,8 +81,10 @@ WKD is **domain-scoped**: a lookup for `user@example.com` is computed from and
 fetched from `example.com`'s own WKD - never from condado.dev. So a key for an
 address like `geyslan.gregorio@aquasec.com` **cannot** be made WKD-discoverable
 from here; only the owner of `aquasec.com` can publish that. You may still host
-it as an armored link-only download under `keys/` (a public key is public) - it
-just won't be found by `gpg --locate-keys`.
+it as an armored link-only download under `keys/<domain>/<localpart>.asc` (e.g.
+`keys/aquasec.com/geyslan.gregorio.asc`) - a public key is public - it just
+won't be found by `gpg --locate-keys`. Grouping by the owning domain keeps these
+foreign keys clearly separated from condado.dev's own WKD-backed `keys/*.asc`.
 
 ## Hosting (GitHub Pages)
 

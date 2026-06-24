@@ -15,14 +15,21 @@ HTTPS, and imports it. Always confirm the fingerprint below before trusting it.
 
 ## Available keys
 
-| Email            | Primary fingerprint                                 | Download                 |
-| ---------------- | --------------------------------------------------- | ------------------------ |
-| `gg@condado.dev` | `802A 939D ECC1 86E1 FD52  20CC 5FBF D625 E01E F53F` | [`gg.asc`](keys/gg.asc)  |
+| Email                            | Primary fingerprint                                 | Download                                                | WKD |
+| -------------------------------- | --------------------------------------------------- | ------------------------------------------------------- | --- |
+| `gg@condado.dev`                 | `802A 939D ECC1 86E1 FD52  20CC 5FBF D625 E01E F53F` | [`gg.asc`](keys/gg.asc)                                 | yes |
+| `geyslan.gregorio@aquasec.com`   | `ECFE CDE1 C10E 8DB2 DACF  8E86 D2E9 8A1A 63DB DDAB` | [`aquasec.com/geyslan.gregorio.asc`](keys/aquasec.com/geyslan.gregorio.asc) | no  |
+
+The **WKD** column marks whether the key is auto-discoverable via
+`gpg --locate-keys`. WKD is domain-scoped, so only `condado.dev` keys resolve
+from here; the `aquasec.com` key is a link-only download (see
+[MAINTENANCE.md](MAINTENANCE.md)).
 
 Direct armored download (handy for linking elsewhere):
 
 ```bash
 curl -s https://openpgpkey.condado.dev/keys/gg.asc | gpg --import
+curl -s https://openpgpkey.condado.dev/keys/aquasec.com/geyslan.gregorio.asc | gpg --import
 ```
 
 ## Verify
